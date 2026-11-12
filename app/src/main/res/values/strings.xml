@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Shizuku Stub</string>
+    <string name="permission_group_label">Shizuku API</string>
+    <string name="permission_group_description">Allows apps to request privileged API access.</string>
+    <string name="permission_label">Shizuku API access</string>
+    <string name="permission_description">Allows the app to use the Shizuku-compatible privilege service.</string>
+    <string name="manager_missing">Install Nightzuku to use this stub.</string>
+</resources>

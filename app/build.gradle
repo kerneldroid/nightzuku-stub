@@ -1,0 +1,66 @@
+plugins {
+    id "com.android.application"
+}
+
+android {
+    namespace "moe.shizuku.privileged.api"
+    compileSdk 37
+    buildToolsVersion "37.0.0"
+
+    defaultConfig {
+        applicationId "moe.shizuku.privileged.api"
+        minSdk 25
+        targetSdk 37
+        versionCode project.findProperty("stub.versionCode")?.toInteger() ?: 1
+        versionName project.findProperty("stub.versionName") ?: "1.0.0"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
+    }
+
+    buildFeatures {
+        buildConfig false
+    }
+
+    signingConfigs {
+        sign
+    }
+
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.sign
+        }
+        release {
+            signingConfig signingConfigs.sign
+            minifyEnabled false
+            shrinkResources false
+        }
+    }
+
+    dependenciesInfo {
+        includeInApk false
+    }
+
+    lint {
+        checkReleaseBuilds false
+    }
+}
+
+def signingPropsFile = rootProject.file("signing.properties")
+def signingProps = new Properties()
+if (signingPropsFile.canRead()) {
+    signingPropsFile.withInputStream { signingProps.load(it) }
+    android.signingConfigs.sign.storeFile = rootProject.file(signingProps["KEYSTORE_FILE"])
+    android.signingConfigs.sign.storePassword =
+        System.getenv("KEYSTORE_PASSWORD") ?: signingProps["KEYSTORE_PASSWORD"]
+    android.signingConfigs.sign.keyAlias = signingProps["KEYSTORE_ALIAS"]
+    android.signingConfigs.sign.keyPassword =
+        System.getenv("KEYSTORE_ALIAS_PASSWORD") ?: signingProps["KEYSTORE_ALIAS_PASSWORD"]
+} else {
+    android.signingConfigs.sign.storeFile = android.signingConfigs.debug.storeFile
+    android.signingConfigs.sign.storePassword = android.signingConfigs.debug.storePassword
+    android.signingConfigs.sign.keyAlias = android.signingConfigs.debug.keyAlias
+    android.signingConfigs.sign.keyPassword = android.signingConfigs.debug.keyPassword
+}
